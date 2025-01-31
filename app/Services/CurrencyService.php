@@ -1,4 +1,4 @@
-<?
+<?php
 
 namespace App\Services;
 
@@ -15,9 +15,8 @@ class CurrencyService
         $rates = [
             'usd' => ['eur' => 0.82, 'gbp' => 0.74],
             'eur' => ['usd' => 1.22, 'gbp' => 0.91],
-            'gbp' => ['usd' => 1.35, 'eur' => 1.10],
+            'gbp' => ['usd' => 1.35, 'eur' => 1.10]
         ];
-
         return $rates[$from][$to] ?? 1.0;
     }
 }
