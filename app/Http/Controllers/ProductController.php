@@ -8,15 +8,21 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    protected $currencyService;
+
+    public function __construct(CurrencyService $currencyService)
+    {
+        $this->currencyService = $currencyService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
        $products = Product::all();
-       $currencyService = new CurrencyService();
        foreach ($products as $product) {
-           $product->converted_price = $currencyService->convert($product->price, 'usd', 'eur');
+           $product->converted_price = $this->currencyService->convert($product->price, 'usd', 'eur');
        }
        return view('products.index', compact('products'));
     }
