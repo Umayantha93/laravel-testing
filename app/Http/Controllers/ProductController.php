@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Services\CurrencyService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -20,11 +21,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-       $products = Product::all();
-       foreach ($products as $product) {
-           $product->converted_price = $this->currencyService->convert($product->price, 'usd', 'eur');
-       }
-       return view('products.index', compact('products'));
+        $products = Product::all();
+        return view('products.index', compact('products'));
     }
 
     /**
@@ -44,13 +42,14 @@ class ProductController extends Controller
             'name' => 'required',
             'price' => 'required',
             'description' => 'required',
+            'price' => 'numeric|min:0|max:999999.99',
         ]);
 
         Product::create([
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
-            'user_id' => auth()->user()->id,
+            'user_id' => Auth::id(),
         ]);
 
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
@@ -61,7 +60,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-       $product = Product::findOrFail($id);
+        $product = Product::findOrFail($id);
 
         return view('products.show', compact('product'));
     }

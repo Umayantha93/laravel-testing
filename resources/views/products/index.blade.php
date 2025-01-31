@@ -17,44 +17,48 @@
                     </div>
 
                     @if (session('success'))
-                    <div class="alert alert-success mt-2">
-                        {{ session('success') }}
-                    </div>
+                        <div class="alert alert-success mt-2">
+                            {{ session('success') }}
+                        </div>
                     @endif
 
                     @if ($products->isEmpty())
                         <div class="text-center mt-3">
-                            <p class="text-gray-500 text-lg">{{ __("No products found") }}</p>
+                            <p class="text-gray-500 text-lg">{{ __('No products found') }}</p>
                         </div>
                     @else
-                    <table class="table mt-3">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Price</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($products as $product)
-                            <tr>
-                                <td>{{ $product->id }}</td>
-                                <td>{{ $product->name }}</td>
-                                <td>{{ $product->description }}</td>
-                                <td>{{ $product->price }}</td>
-                                <td>
-                                    <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                    <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
-                                    </form>
-                                </td>
-                            @endforeach
-                        </tbody>
-                    </table>
+                        <table class="table mt-3">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($products as $product)
+                                    <tr>
+                                        <td>{{ $product->id }}</td>
+                                        <td>{{ $product->name }}</td>
+                                        <td>{{ $product->description }}</td>
+                                        <td>{{ $product->convertCurrency(floatval($product->price), 'usd', 'eur') }}
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('products.edit', $product->id) }}"
+                                                class="btn btn-warning btn-sm">Edit</a>
+                                            <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Are you sure?')">Delete</button>
+                                            </form>
+                                        </td>
+                                @endforeach
+                            </tbody>
+                        </table>
                     @endif
                 </div>
             </div>
