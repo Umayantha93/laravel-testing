@@ -29,6 +29,8 @@ class ProductsTest extends TestCase
 
     public function test_homepage_contains_table_with_data(): void
     {
+        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
 
         $this->actingAs($user);
